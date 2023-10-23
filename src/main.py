@@ -3,19 +3,34 @@ from fastapi import FastAPI
 from auth.service import auth_backend, fastapi_users
 from auth.schemas import UserRead, UserCreate
 
+from posts.router import router as post_router
+from analitics.router import router as analitics_router
+
 
 app = FastAPI(
-    title="Hypotron"
+    title="Social_test_task"
 )
 
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
-    prefix="/auth_doctor",
+    prefix="/auth",
     tags=["Auth"],
 )
 
 app.include_router(
     fastapi_users.get_register_router(UserRead, UserCreate),
-    prefix="/auth_doctor",
+    prefix="/auth",
     tags=["Auth"],
+)
+
+app.include_router(
+    post_router,
+    prefix="/post",
+    tags=["Post"]
+)
+
+app.include_router(
+    analitics_router,
+    prefix="/analistics",
+    tags=["Analistics"]
 )
