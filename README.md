@@ -31,15 +31,8 @@ To install the project dependencies, follow these steps:
 ## Performing Migrations Using Alembic
 
 To perform database migrations using Alembic, follow these commands:
- 
 
-1. Create a migration:
-
-    ```bash
-    alembic revision --autogenerate -m "Database creation"
-    ```
-
-2. Apply the migration:
+Apply the migration:
 
     ```bash
     alembic upgrade head
