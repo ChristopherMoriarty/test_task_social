@@ -1,9 +1,19 @@
+from typing import List
 from sqlalchemy import delete, insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from posts.schemas import PostCreate
 
 from models import Post, Like
+
+async def get_all_posts(
+    session: AsyncSession
+) -> List[Post]:
+    
+    stmt = select(Post)
+    db_posts = await session.execute(stmt)
+    
+    return db_posts.scalars().all()
 
 async def get_user_post(
     session: AsyncSession,
@@ -52,7 +62,7 @@ async def unlike_post(
     session: AsyncSession,
         user_id: int,
         post_id: int
-) -> None:
+) -> Like:
     stmt = delete(Like).where(
             Like.post_id == post_id, 
             Like.user_id == user_id,

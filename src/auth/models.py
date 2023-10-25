@@ -8,8 +8,8 @@ from database import Base
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
-    __tablename__ = 'user'
-    
+    __tablename__ = "user"
+
     id = Column(Integer, primary_key=True)
     username = Column(String, unique=True, nullable=False)
     email = Column(String, nullable=False)
@@ -18,7 +18,4 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     last_login = Column(TIMESTAMP)
     last_action = Column(TIMESTAMP)
 
-    posts = relationship('Post', back_populates='author')
-
-    
-    
+    posts = relationship("Post", back_populates="author")

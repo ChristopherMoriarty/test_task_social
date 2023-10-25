@@ -1,17 +1,47 @@
+import json
+
+from fastapi import Response, status
 from fastapi_users import FastAPIUsers
 from fastapi_users.authentication import CookieTransport, AuthenticationBackend
 from fastapi_users.authentication import JWTStrategy
 
 from auth.manager import get_user_manager
 from auth.models import User
-from posts.models import Post, Like
 from config import SECRET_AUTH
 
-cookie_transport = CookieTransport(cookie_name="bonds", cookie_max_age=3600)
+
+class MyCookieTransport(CookieTransport):
+    async def get_login_response(self, token: str) -> Response:
+        
+        response_data = json.dumps({
+            "status": "success",
+            "data": None,
+            "detail": "successfully authorized",
+        })
+        
+        response = Response(content=response_data, status_code=status.HTTP_200_OK)
+        response.headers["Content-Type"] = "application/json"
+        return self._set_login_cookie(response, token)
+    
+    async def get_logout_response(self) -> Response:
+        
+        response_data = json.dumps({
+            "status": "success",
+            "data": None,
+            "detail": "successfully logout",
+        })
+        
+        response = Response(content=response_data, status_code=status.HTTP_200_OK)
+        response.headers["Content-Type"] = "application/json"
+        return self._set_logout_cookie(response)
+
+
+cookie_transport = MyCookieTransport(cookie_name="token", cookie_max_age=3600)
 
 
 def get_jwt_strategy() -> JWTStrategy:
     return JWTStrategy(secret=SECRET_AUTH, lifetime_seconds=3600)
+
 
 auth_backend = AuthenticationBackend(
     name="jwt",
