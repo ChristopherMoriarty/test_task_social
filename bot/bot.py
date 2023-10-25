@@ -17,8 +17,8 @@ class URLs:
 
 @dataclass
 class UsersData:
-    usernames: str = "bot/usernames.txt"
-    emails: str = "bot/emails.txt"
+    usernames: str = "usernames.txt"
+    emails: str = "emails.txt"
 
 
 class BotUtils(UsersData):
@@ -54,12 +54,12 @@ class BotUtils(UsersData):
 
     @classmethod
     def _get_max_numbers_of_chosen_object(cls, choice_index: int) -> int:
-        choice = cls._read_file("bot/config.csv")[choice_index]
+        choice = cls._read_file("config.csv")[choice_index]
         return int(choice.split(",")[1].replace("\n", ""))
 
     @staticmethod
     def _save_registered_user_into_file(user_data: dict) -> None:
-        file_name = "bot/registered.csv"
+        file_name = "registered.csv"
         data = user_data.values()
 
         if os.path.exists(file_name):
@@ -87,7 +87,7 @@ class Bot(BotUtils, URLs):
     @classmethod
     def login_user(cls) -> list:
         access_tokens = []
-        with open("bot/registered.csv", "r") as file:
+        with open("registered.csv", "r") as file:
             lines = file.readlines()
             emails = [line.split(",")[0] for line in lines]
             passwords = [line.rstrip().split(",")[-1] for line in lines]
@@ -151,6 +151,7 @@ class Run(Bot):
 
             posts_ids = cls.get_posts()
             cls.like_posts_randomly(access_token, posts_ids, likes)
+
 
 
 Run().start_process()
