@@ -10,6 +10,12 @@ To install the project dependencies, follow these steps:
     python3.8.10 -m venv venv
     ```
 
+2. Activate a virtual enviroment:
+   
+   ```bash
+    venv\Scripts\activate
+    ```
+
 2. Install the dependencies from the `requirements.txt` file using pip:
 
     ```bash
